@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Query Chains — A Case Study</title>
-<meta name="description" content="Query Chains — a design and engineering case study. One Salesforce investigation across four surfaces, then twelve chapters on how it was designed and built.">
+<meta name="description" content="Query Chains — a design and engineering case study. One Salesforce investigation carried across every surface of the product, then twelve chapters on how it was designed and built.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:title" content="Query Chains — A Case Study">
-<meta property="og:description" content="Query Chains — a design and engineering case study. One Salesforce investigation across four surfaces, then twelve chapters on how it was designed and built.">
+<meta property="og:description" content="Query Chains — a design and engineering case study. One Salesforce investigation carried across every surface of the product, then twelve chapters on how it was designed and built.">
 <meta property="og:type" content="article">
 </head>
 <body>
@@ -741,7 +741,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
 <header class="top">
   <div class="top__in">
-    <div class="brand"><span class="brand__m">Query<em>Chains</em></span><span class="brand__v">v0.2.0</span></div>
+    <div class="brand"><span class="brand__m">Query<em>Chains</em></span><span class="brand__v">v0.4.0-beta</span></div>
     <p class="top__now" id="now" aria-live="polite"></p>
   </div>
   <div class="prog" aria-hidden="true"><i id="progbar"></i></div>
@@ -936,7 +936,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
     <div class="cf__ask">
       <p id="cf-ask">Choose the question you would ask first.</p>
-      <p class="cf__hint">One Order, one session, five surfaces. Each answer hands you to the next.</p>
+      <p class="cf__hint">One Order, one session, three surfaces. Each answer hands you to the next.</p>
       <div class="cf__map" role="group" aria-labelledby="cf-ask">
         <button type="button" class="cf__q" data-route="access" data-rec="1" aria-pressed="false">
           <span class="cf__s">Side panel</span>
@@ -980,16 +980,16 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   <div class="bridge">
     <a href="#b-architecture">
       <span class="bridge__k">Architecture</span>
-      <span class="bridge__t">Five surfaces share one session and one typed message protocol. The credential is read in the service worker and never crosses back.</span>
+      <span class="bridge__t">Three surfaces share one session and one typed message protocol. The credential is read in the service worker and never crosses back.</span>
       <span class="bridge__m">No OAuth · nothing stored</span></a>
     <a href="#b-performance">
       <span class="bridge__k">Performance</span>
       <span class="bridge__t">A finished feature was cut from the bundle rather than shipped unreachable, and the log parse is bounded so a 40 MB file cannot stall the console.</span>
-      <span class="bridge__m">883 kB → 783 kB packaged</span></a>
+      <span class="bridge__m">883 kB → 953 kB packaged</span></a>
     <a href="#b-reliability">
       <span class="bridge__k">Reliability</span>
       <span class="bridge__t">A stylesheet ceiling, an accessibility scan and a namespace audit each fail the build — and each states what it does not cover.</span>
-      <span class="bridge__m">1,889 tests · 3 gates</span></a>
+      <span class="bridge__m">3,937 tests · 3 gates</span></a>
   </div>
 
   <h2 class="sec-t">The thesis</h2>
@@ -1015,9 +1015,9 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <table class="t">
       <tbody>
         <tr><td style="width:150px">Role</td><td>Design and engineering, single author — research, interface, design system, architecture, implementation.</td></tr>
-        <tr><td>Platform</td><td>Chrome extension, Manifest V3. Five surfaces: a full builder tab, a docked side panel, two standalone consoles.</td></tr>
+        <tr><td>Platform</td><td>Chrome extension, Manifest V3. Three surfaces: a full builder tab, a docked side panel, and the Data Loader in a tab of its own.</td></tr>
         <tr><td>Who it is for</td><td>Salesforce developers and administrators who spend the working day inside an org, and switch between several.</td></tr>
-        <tr><td>Version</td><td>0.2.0. Light and dark themes, a user-set accent, corner style and text size — all driven from the same token layer.</td></tr>
+        <tr><td>Version</td><td>0.4.0-beta. Light and dark themes, a user-set accent, corner style and text size — all driven from the same token layer.</td></tr>
       </tbody>
     </table>
   </div>
@@ -1032,7 +1032,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   <dl class="take">
     <div><dt>Decision</dt><dd>Build one surface that comes to the org tab, rather than another destination to navigate to.</dd></div>
     <div><dt>Evidence</dt><dd>Four distinct jobs — query, access, logs, events — each of which otherwise means a separate Setup page.</dd></div>
-    <div><dt>Result</dt><dd>Five surfaces sized to their context, sharing one session, one token layer and one message protocol.</dd></div>
+    <div><dt>Result</dt><dd>Three surfaces sized to their context, sharing one session, one token layer and one message protocol.</dd></div>
   </dl>
 </section>
 <section class="board" data-sec="ux" id="b-research" aria-labelledby="h-research">
@@ -1068,12 +1068,12 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
         </g>
         <path class="flow-edge" d="M602 64 V96 H62 V64" marker-end="url(#wa)" stroke-dasharray="4 4"/>
         <text class="flow-lane-t" x="290" y="112">and around again — four context switches per hypothesis</text>
-        <text class="hf-foot" x="6" y="128">Each hop loses your place. None of these five surfaces knows what the others found.</text>
+        <text class="hf-foot" x="6" y="128">Each hop loses your place. None of these three surfaces knows what the others found.</text>
       </svg>
     </div>
     <p class="pan__f">
       <b>The insight that shaped the product:</b> the expensive part is not any
-      single step, it is the switching. Three of those five surfaces already
+      single step, it is the switching. Three of those three surfaces already
       exist in the browser the developer is in. Putting them one keystroke apart,
       sharing one session, removes the loop rather than speeding it up.
     </p>
@@ -1288,9 +1288,9 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 </section><section class="board" data-sec="ux" id="b-surfaces" aria-labelledby="h-surfaces">
   <div class="bhead">
     <p class="bhead__k">UX · 04 — Structure</p>
-    <h1 class="bhead__t" id="h-surfaces">Five places the product appears</h1>
+    <h1 class="bhead__t" id="h-surfaces">Three places the product appears</h1>
     <p class="bhead__d">
-      One extension, five surfaces, each shaped by the room it gets. A full tab
+      One extension, three surfaces, each shaped by the room it gets. A full tab
       can afford a schema rail and a results grid; a 320px dock cannot, so it
       shows one record and gets out of the way. Every frame below is drawn from
       the same tokens the product ships.
@@ -1505,7 +1505,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   <dl class="take">
     <div><dt>Decision</dt><dd>Size each surface to the room it gets rather than shipping one layout at four widths.</dd></div>
     <div><dt>Evidence</dt><dd>A full tab affords a schema rail, an editor and a grid at once; a 320px dock affords one record.</dd></div>
-    <div><dt>Result</dt><dd>Five surfaces sharing a session, a token layer and a message protocol — and nothing else.</dd></div>
+    <div><dt>Result</dt><dd>Three surfaces sharing a session, a token layer and a message protocol — and nothing else.</dd></div>
   </dl>
 </section>
 <section class="board" data-sec="ux" id="b-design" aria-labelledby="h-design">
@@ -2153,7 +2153,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <p class="bhead__k">UX · 08 — Outcome</p>
     <h1 class="bhead__t" id="h-outcome">What shipped, and what it does not claim</h1>
     <p class="bhead__d">
-      Version 0.2.0 is four working surfaces, a token layer that drives every
+      Version 0.4.0-beta is three working surfaces, a token layer that drives every
       one of them, and three gates that fail a build before a regression reaches
       a user. The boundaries are stated as plainly as the results — a case study
       that only lists wins is a brochure.
@@ -2179,8 +2179,8 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <table class="t">
       <thead><tr><th>Measure</th><th>Value</th><th>What it means</th></tr></thead>
       <tbody>
-        <tr><td>Packaged extension</td><td>783 kB</td><td>Down from 883 kB, after the gated Chain UI and its graph library left the bundle.</td></tr>
-        <tr><td>Automated suite</td><td>1,889 tests · 149 files</td><td>Fast and deterministic. Every Salesforce integration is mocked.</td></tr>
+        <tr><td>Packaged extension</td><td>953 kB</td><td>Down from 883 kB, after the gated Chain UI and its graph library left the bundle.</td></tr>
+        <tr><td>Automated suite</td><td>3,937 tests · 285 files</td><td>Fast and deterministic. Every Salesforce integration is mocked.</td></tr>
         <tr><td>Design tokens</td><td>2 hue angles</td><td>The whole palette derives from two custom properties, which is what makes a user-set accent possible with no per-component overrides.</td></tr>
         <tr><td>Build gates</td><td>3</td><td>Stylesheet ceiling, accessibility scan, cross-browser namespace audit. Each fails the build, not the review.</td></tr>
       </tbody>
@@ -2218,11 +2218,11 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   </p>
   <div class="ev">
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
-      <div class="ev__b"><b>1,889 tests across 149 files, all passing</b> — full suite run
+      <div class="ev__b"><b>3,937 tests across 285 files, all passing</b> — full suite run
         1 August 2026, alongside a clean typecheck and lint. Fast and deterministic;
         every Salesforce integration in it is mocked.</div></div>
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
-      <div class="ev__b"><b>883 kB → 783 kB packaged.</b> Taken at the build, either side of
+      <div class="ev__b"><b>883 kB → 953 kB packaged.</b> Taken at the build, either side of
         removing the gated Chain UI. The graph library it depended on left with it,
         so the saving was roughly double the headline chunk.</div></div>
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
@@ -2265,7 +2265,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
   <div class="stats" style="margin-bottom:30px">
     <div><p class="k">Manifest</p><p class="v">V3</p></div>
-    <div><p class="k">Tests</p><p class="v"><em>1,889</em></p></div>
+    <div><p class="k">Tests</p><p class="v"><em>3,937</em></p></div>
     <div><p class="k">Packaged</p><p class="v">766<span style="font-size:15px"> kB</span></p></div>
     <div><p class="k">Third-party calls</p><p class="v"><em>0</em></p></div>
     <div><p class="k">Enforcement gates</p><p class="v">3</p></div>
@@ -2313,7 +2313,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <div class="pan__b pan__b--sunk">
       <svg viewBox="0 0 420 250" role="img" aria-labelledby="hT hD" class="figsvg" style="max-width:640px;margin:0 auto">
         <title id="hT">Trust boundary diagram</title>
-        <desc id="hD">Four interface surfaces exchange typed messages with the service worker. Only the service worker holds the session cookie, and only it talks to Salesforce.</desc>
+        <desc id="hD">The interface surfaces exchange typed messages with the service worker. Only the service worker holds the session cookie, and only it talks to Salesforce.</desc>
         <defs>
           <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--rule-firm)"/></marker>
           <marker id="arb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--brand)"/></marker>
@@ -2962,7 +2962,7 @@ for (let i = 0; i &lt; take.length; i++)
           </tbody>
         </table></div>
       </div>
-      <p class="pan__f"><b>883 kB → 783 kB.</b> The largest single win was deleting a feature that
+      <p class="pan__f"><b>883 kB → 953 kB.</b> The largest single win was deleting a feature that
         shipped disabled: the code was still downloaded by everyone who installed it.</p>
     </div>
   </div>
@@ -3105,7 +3105,7 @@ for (let i = 0; i &lt; take.length; i++)
   <h2 class="sec-t">What each layer can prove</h2>
   <div class="grid g2">
     <div class="pan">
-      <div class="pan__h"><span class="pan__n">What 1,889 tests prove</span></div>
+      <div class="pan__h"><span class="pan__n">What 3,937 tests prove</span></div>
       <div class="pan__b">
         <p style="margin:0;font-size:14px">Pure logic, parsing, diagnosis rules, access verdicts, follow behaviour,
         message shapes, manifest permissions. All of it fast and deterministic.</p>
@@ -3128,7 +3128,7 @@ for (let i = 0; i &lt; take.length; i++)
   <dl class="take">
     <div><dt>Decision</dt><dd>Put the properties review reads past into gates that fail the build.</dd></div>
     <div><dt>Evidence</dt><dd>A stylesheet ceiling, an accessibility scan and a namespace audit — each one catching a class of drift that degrades gradually rather than breaking.</dd></div>
-    <div><dt>Result</dt><dd>1,889 automated tests, plus three gates that state their own scope including what they do not cover.</dd></div>
+    <div><dt>Result</dt><dd>3,937 automated tests, plus three gates that state their own scope including what they do not cover.</dd></div>
   </dl>
 </section>
 
@@ -3152,7 +3152,7 @@ for (let i = 0; i &lt; take.length; i++)
   </p>
   <div class="doc-table-wrap">
     <table class="doc-table">
-      <caption class="doc-cap">Measured at the cut, 31 July 2026 — not current totals. The suite has since grown to 1,889 tests and the package to 783 kB as later work landed.</caption>
+      <caption class="doc-cap">Measured at the cut, 31 July 2026 — not current totals. The suite has since grown to 3,937 tests and the package to 953 kB as later work landed.</caption>
         <thead><tr><th>Artifact</th><th>Before the cut</th><th>After the cut</th></tr></thead>
       <tbody>
         <tr><td>Chain UI chunk</td><td>277 kB</td><td>removed</td></tr>
@@ -3509,8 +3509,9 @@ for (let i = 0; i &lt; take.length; i++)
       });
 
       // Hand-off: an answer's next step opens the next surface, so one
-      // investigation crossing four surfaces is something you do rather than
-      // something the copy asserts.
+      // investigation crossing every surface is something you do rather than
+      // something the copy asserts. (No count here — this comment ships inside
+      // the page, where the drift test cannot see it.)
       [].slice.call(cf.querySelectorAll("[data-goto]")).forEach(function(g){
         g.addEventListener("click", function(){
           touched = true;
