@@ -741,7 +741,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
 <header class="top">
   <div class="top__in">
-    <div class="brand"><span class="brand__m">Query<em>Chains</em></span><span class="brand__v">v0.4.0-beta</span></div>
+    <div class="brand"><span class="brand__m">Query<em>Chains</em></span><span class="brand__v">v0.4.1-beta</span></div>
     <p class="top__now" id="now" aria-live="polite"></p>
   </div>
   <div class="prog" aria-hidden="true"><i id="progbar"></i></div>
@@ -865,10 +865,10 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
           </div>
         </div>
 
-        <div class="cf__scene" data-route="logs" tabindex="-1" aria-label="Log console — failure diagnosis">
+        <div class="cf__scene" data-route="logs" tabindex="-1" aria-label="Dev Console, Debug Logs — failure diagnosis">
           <div class="win" style="width:100%;max-width:100%">
             <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span>
-              <span class="win__url">chrome-extension://…/logs.html</span></div>
+              <span class="win__url">chrome-extension://…/builder.html?mode=console&amp;tab=logs</span></div>
             <div class="win__body" style="padding:13px">
               <div class="cf__e find" data-ev style="margin-bottom:9px">
                 <div class="find__h"><span class="find__s">fatal</span>
@@ -901,7 +901,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
         <div class="cf__scene" data-route="events" tabindex="-1" aria-label="Live events — confirmation">
           <div class="win" style="width:100%;max-width:100%">
             <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span>
-              <span class="win__url">chrome-extension://…/events.html</span></div>
+              <span class="win__url">chrome-extension://…/builder.html?mode=console&amp;tab=events</span></div>
             <div class="win__body">
               <div class="cf__e" data-ev>
                 <div class="row" style="padding:9px 13px;border-bottom:1px solid var(--rule)">
@@ -947,11 +947,11 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
           <span>Which related Orders are affected?</span>
           <span class="cf__o">Focused result set</span></button>
         <button type="button" class="cf__q" data-route="logs" aria-pressed="false">
-          <span class="cf__s">Log console</span>
+          <span class="cf__s">Console · Debug Logs</span>
           <span>Why did the automation fail?</span>
           <span class="cf__o">Diagnosis with supporting trace</span></button>
         <button type="button" class="cf__q" data-route="events" aria-pressed="false">
-          <span class="cf__s">Live events</span>
+          <span class="cf__s">Console · Events</span>
           <span>Did the fix take effect?</span>
           <span class="cf__o">Observable confirmation</span></button>
       </div>
@@ -984,12 +984,12 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
       <span class="bridge__m">No OAuth · nothing stored</span></a>
     <a href="#b-performance">
       <span class="bridge__k">Performance</span>
-      <span class="bridge__t">A finished feature was cut from the bundle rather than shipped unreachable, and the log parse is bounded so a 40 MB file cannot stall the console.</span>
-      <span class="bridge__m">883 kB → 953 kB packaged</span></a>
+      <span class="bridge__t">A finished feature was cut from the bundle rather than shipped unreachable, the log parse is bounded so a 40 MB file cannot stall the console, and a chain of fifty logs is indexed where the data already is.</span>
+      <span class="bridge__m">1,224 kB packaged · what you do not open, you do not fetch</span></a>
     <a href="#b-reliability">
       <span class="bridge__k">Reliability</span>
       <span class="bridge__t">A stylesheet ceiling, an accessibility scan and a namespace audit each fail the build — and each states what it does not cover.</span>
-      <span class="bridge__m">3,937 tests · 3 gates</span></a>
+      <span class="bridge__m">4,532 tests · 3 gates</span></a>
   </div>
 
   <h2 class="sec-t">The thesis</h2>
@@ -1015,9 +1015,9 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <table class="t">
       <tbody>
         <tr><td style="width:150px">Role</td><td>Design and engineering, single author — research, interface, design system, architecture, implementation.</td></tr>
-        <tr><td>Platform</td><td>Chrome extension, Manifest V3. Three surfaces: a full builder tab, a docked side panel, and the Data Loader in a tab of its own.</td></tr>
+        <tr><td>Platform</td><td>Chrome extension, Manifest V3. Three built pages: a full builder tab holding Query, Chain and Console modes, a docked side panel, and the Data Loader in a tab of its own. The Console carries five tools, one of which — the debug-log analyzer — carries the Activity Tracer.</td></tr>
         <tr><td>Who it is for</td><td>Salesforce developers and administrators who spend the working day inside an org, and switch between several.</td></tr>
-        <tr><td>Version</td><td>0.4.0-beta. Light and dark themes, a user-set accent, corner style and text size — all driven from the same token layer.</td></tr>
+        <tr><td>Version</td><td>0.4.1-beta, in two languages. Light and dark themes, a user-set accent, corner style and text size — all driven from the same token layer.</td></tr>
       </tbody>
     </table>
   </div>
@@ -1031,7 +1031,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
   <dl class="take">
     <div><dt>Decision</dt><dd>Build one surface that comes to the org tab, rather than another destination to navigate to.</dd></div>
-    <div><dt>Evidence</dt><dd>Four distinct jobs — query, access, logs, events — each of which otherwise means a separate Setup page.</dd></div>
+    <div><dt>Evidence</dt><dd>Every one of these jobs — a query, an access route, a log, a live event stream, a script, a bulk load — otherwise means leaving for a separate Setup page.</dd></div>
     <div><dt>Result</dt><dd>Three surfaces sized to their context, sharing one session, one token layer and one message protocol.</dd></div>
   </dl>
 </section>
@@ -1288,12 +1288,12 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 </section><section class="board" data-sec="ux" id="b-surfaces" aria-labelledby="h-surfaces">
   <div class="bhead">
     <p class="bhead__k">UX · 04 — Structure</p>
-    <h1 class="bhead__t" id="h-surfaces">Three places the product appears</h1>
+    <h1 class="bhead__t" id="h-surfaces">Where the product appears, and why each place is shaped that way</h1>
     <p class="bhead__d">
-      One extension, three surfaces, each shaped by the room it gets. A full tab
-      can afford a schema rail and a results grid; a 320px dock cannot, so it
-      shows one record and gets out of the way. Every frame below is drawn from
-      the same tokens the product ships.
+      One extension, three built pages and a launcher, each shaped by the room it
+      gets. A full tab can afford a schema rail and a results grid; a 320px dock
+      cannot, so it shows one record and gets out of the way. Every frame below is
+      drawn from the same tokens the product ships.
     </p>
   </div>
 
@@ -1412,24 +1412,30 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     seven queries and throwing that away on a tab click would be a poor trade.
   </p>
 
-  <div class="cutline"><span>03 · Consoles — the log analyzer and the event monitor</span></div>
+  <div class="cutline"><span>03 · Dev Console — five tools in the same tab</span></div>
   <div class="stage">
-    <div class="stage__row stage__row--stagger">
-      <div class="win">
+    <div class="stage__row">
+      <div class="win" style="max-width:760px">
         <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span>
-          <span class="win__url">chrome-extension://…/logs.html</span></div>
+          <span class="win__url">chrome-extension://…/builder.html?mode=console&amp;tab=logs</span></div>
         <div class="win__body">
-          <div class="app__top"><span class="app__ttl">Log analyzer</span>
-            <span class="app__sub">124 logs · acme-dev</span></div>
+          <div class="app__top">
+            <span class="app__ttl">Console</span>
+            <span class="pill">acme-dev.my.salesforce.com</span>
+            <span class="app__sub" style="margin-left:auto">124 logs</span>
+          </div>
           <div class="app__split">
-            <div class="app__rail" style="width:132px">
-              <p class="railitem on">17:23:00 /aura</p>
-              <p class="railitem">17:22:58 /aura</p>
-              <p class="railitem">17:22:11 VF</p>
-              <p class="railitem">17:21:47 /aura</p>
-              <p class="railitem">17:20:02 Batch</p>
+            <div class="app__rail" style="width:150px">
+              <p class="railitem">Anonymous Apex</p>
+              <p class="railitem">HTTP Callout</p>
+              <p class="railitem">GraphQL</p>
+              <p class="railitem">Events</p>
+              <p class="railitem on">Debug Logs</p>
             </div>
             <div class="app__main" style="padding:11px">
+              <div class="row" style="margin-bottom:9px">
+                <span class="pill">Logs</span><span class="pill pill--live">Activity Tracer</span>
+              </div>
               <div class="find" style="margin-bottom:9px">
                 <div class="find__h"><span class="find__s">fatal</span>
                   <span class="find__t">SOQL governor limit hit — 101 queries</span></div>
@@ -1444,40 +1450,142 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:16px">
+    The log analyzer and the event monitor used to be standalone pages, and the
+    build no longer produces them. Each was reachable by URL, which meant a user
+    could hold two copies of the same tool — two subscriptions to one channel,
+    two open logs, and nothing to say which one they were looking at. They are
+    tools inside the Console now, alongside an Anonymous Apex runner, an HTTP
+    Callout tester and a GraphQL explorer.
+  </p>
+  <p class="lede">
+    The five tools sit on a rail rather than a tab row, and the distinction is
+    functional: switching tools preserves state, because nothing unmounts. A
+    script stays mid-edit, an event stream keeps arriving, and an open log stays
+    open while you go and run a query against it.
+  </p>
 
-      <div class="win">
+  <div class="cutline"><span>04 · Activity Tracer — one action across every transaction</span></div>
+  <div class="stage">
+    <div class="stage__row">
+      <div class="win" style="max-width:720px">
         <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span>
-          <span class="win__url">chrome-extension://…/events.html</span></div>
+          <span class="win__url">chrome-extension://…/builder.html?mode=console&amp;tab=logs</span></div>
         <div class="win__body">
-          <div class="app__top"><span class="dot dot--beat"></span>
-            <span class="app__ttl">Event monitor</span>
-            <span class="pill pill--live" style="margin-left:auto">LIVE · 3</span></div>
-          <div class="row" style="padding:7px 13px;border-bottom:1px solid var(--rule)">
-            <span class="pill">1,284 received</span><span class="pill">0 dropped</span><span class="pill">12/min</span>
-          </div>
-          <div style="font-family:var(--f-mono);font-size:10.5px">
-            <div class="lrow lrow--new"><span class="t">14:05:09.481</span><span class="o">Order_Placed__e</span><span class="n">40218</span><span class="n">249.00</span></div>
-            <div class="lrow lrow--new"><span class="t">14:05:09.102</span><span class="o">Order_Placed__e</span><span class="n">40217</span><span class="n">88.50</span></div>
-            <div class="lrow"><span class="t">14:05:08.774</span><span class="o">AccountChangeEvent</span><span class="n">40216</span><span class="n">UPDATE</span></div>
-            <div class="lrow"><span class="t">14:05:07.219</span><span class="o">Order_Placed__e</span><span class="n">40215</span><span class="n">1,120.00</span></div>
-            <div class="lrow"><span class="t">14:05:05.860</span><span class="o">Shipment__e</span><span class="n">40214</span><span class="n">DISPATCHED</span></div>
-          </div>
-          <div class="row" style="padding:6px 13px;border-top:1px solid var(--rule);font-family:var(--f-mono);font-size:10px;color:var(--ink-quiet)">
-            <span>following newest</span><span class="kbd">f</span>
+          <div class="app__top"><span class="app__ttl">Activity Tracer</span>
+            <span class="pill">Order 801…40218</span>
+            <span class="app__sub" style="margin-left:auto">4 transactions · 3 identities</span></div>
+          <div style="padding:11px 13px">
+            <div class="find" style="border-left-color:var(--info);padding:9px 11px;margin-bottom:8px">
+              <div class="row"><span class="find__t">OrderTrigger</span>
+                <span class="chip" style="margin-left:auto">A. Mehta</span></div>
+              <p style="margin:4px 0 0;font-size:11.5px;color:var(--ink-quiet)">
+                enqueued RecalcQueueable · <span class="mono">certain</span> —
+                AsyncApexJob.ParentJobId = 707Ax0000M2</p>
+            </div>
+            <div class="find" style="border-left-color:var(--info);padding:9px 11px;margin-bottom:8px">
+              <div class="row"><span class="find__t">RecalcQueueable</span>
+                <span class="chip" style="margin-left:auto">⚡ Automated Process</span></div>
+              <p style="margin:4px 0 0;font-size:11.5px;color:var(--ink-quiet)">
+                published OrderStatusChanged__e · <span class="mono">likely</span> —
+                publish call, then a matching replay 40 ms later</p>
+            </div>
+            <div class="find" style="border-left-color:var(--rule);padding:9px 11px;margin-bottom:8px">
+              <div class="row"><span class="find__t" style="color:var(--ink-quiet)">SubscriberTrigger</span>
+                <span class="chip" style="margin-left:auto">no log captured</span></div>
+              <p style="margin:4px 0 0;font-size:11.5px;color:var(--ink-quiet)">
+                The job row proves it ran. Nothing was logging this identity —
+                <span class="mono">arm logging for it</span></p>
+            </div>
+            <div class="find" style="padding:9px 11px">
+              <div class="row"><span class="find__s">fatal</span>
+                <span class="find__t">SOQL governor limit hit — 101 queries</span></div>
+              <p style="margin:4px 0 0;font-size:11.5px;color:var(--ink-quiet)">
+                Transaction 4 of 4 · counts from 3 of 4 scanned</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <p class="lede" style="margin-top:16px">
-    Both consoles are standalone tabs with the same anatomy — a list rail, a
-    detail pane, a status strip, and keyboard hints in the footer of the pane
-    they apply to. The analyzer reads a log and names the cause; the monitor
-    subscribes to a channel and shows arrival as motion, once per batch, never on
-    a timer.
+    A Salesforce problem rarely lives in one transaction. A user saves a record, a
+    trigger enqueues a Queueable, the Queueable publishes a platform event, and a
+    subscriber running as Automated Process is the thing that fails. Four
+    transactions, three identities, four separate debug logs — and neither
+    Salesforce nor the analyzer joins them. The developer sorts the log list by
+    time and rebuilds the path in their head.
+  </p>
+  <p class="lede">
+    The tracer draws that path. Transactions are nodes, the seven kinds of handoff
+    between them are edges, and <b>every edge states the evidence it rests on and
+    how far to trust it</b> — <span class="mono">certain</span> when a job row
+    names its parent, <span class="mono">likely</span> when a publish and a replay
+    line up in time. The same two words the log analyzer uses, because a reader
+    should not have to learn a second vocabulary for confidence.
+  </p>
+  <p class="lede">
+    The grey hop is the part worth arguing for. When a job demonstrably ran but no
+    trace flag covered the identity it ran as, the chain shows the gap rather than
+    closing over it, and offers to arm logging for that identity so the next run
+    is complete. A chain that silently skips its unlogged hops is a chain that
+    lies about its own shape — and the rollup says the same thing about itself,
+    reporting which of its transactions it actually scanned.
   </p>
 
-  <div class="cutline"><span>04 · In-page — the launcher on a Salesforce tab</span></div>
+  <div class="cutline"><span>05 · Data Loader — a page of its own, for a reason</span></div>
+  <div class="stage">
+    <div class="stage__row">
+      <div class="win" style="max-width:700px">
+        <div class="win__bar"><span class="win__dots"><i></i><i></i><i></i></span>
+          <span class="win__url">chrome-extension://…/loader.html</span></div>
+        <div class="win__body">
+          <div class="app__top"><span class="app__ttl">Data Loader</span>
+            <span class="pill">Update · Contact</span>
+            <span class="pill">4,812 rows</span></div>
+          <div class="row" style="padding:7px 13px;border-bottom:1px solid var(--rule)">
+            <span class="chip">Import</span><span class="chip">Unification</span>
+            <span class="chip">Linkage</span><span class="chip">Mapping</span>
+            <span class="chip chip--why">Sanitization</span><span class="chip">Load</span>
+          </div>
+          <div style="padding:11px 13px">
+            <div class="find" style="border-left-color:var(--warn);padding:9px 11px;margin-bottom:8px">
+              <p style="margin:0;font-size:12.5px;font-weight:600">118 rows would fail on a required field</p>
+              <p style="margin:0;font-size:11.5px;color:var(--ink-quiet)">LastName is empty — blocked before anything is sent</p>
+            </div>
+            <div class="find" style="border-left-color:var(--info);padding:9px 11px">
+              <p style="margin:0;font-size:12.5px;font-weight:600">3 values begin with <span class="mono">=</span></p>
+              <p style="margin:0;font-size:11.5px;color:var(--ink-quiet)">Neutralised on export so a spreadsheet cannot execute them</p>
+            </div>
+          </div>
+          <div class="row" style="padding:6px 13px;border-top:1px solid var(--rule);font-family:var(--f-mono);font-size:10px;color:var(--ink-quiet)">
+            <span>preflight passed · nothing sent yet</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="lede" style="margin-top:16px">
+    The loader is a page rather than a fourth mode because of a platform limit,
+    not a layout preference. Manifest V3 stops a service-worker handler at five
+    minutes and a single fetch at thirty seconds, so a load of any size needs a
+    real tab to own the batching and polling loop. A mode inside the builder
+    would put that loop somewhere the browser is entitled to kill.
+  </p>
+  <p class="lede">
+    A load moves through six phases, and each is named after the question it
+    answers rather than the step it performs — <em>what data is there</em>,
+    <em>which records actually exist</em>, <em>what points at what, and in what
+    order</em>, <em>which Salesforce field, and computed how</em>, <em>does every
+    value fit the org's schema</em>, and only then <em>write it, and show what
+    happened</em>. The phrasing is the design: someone mid-load is answering a
+    question, not completing a wizard, and the five phases before the write exist
+    so that the write is the only irreversible thing that happens.
+  </p>
+
+  <div class="cutline"><span>06 · In-page — the launcher on a Salesforce tab</span></div>
   <div class="stage stage--tight">
     <div class="stage__row">
       <div class="win" style="max-width:560px">
@@ -2153,7 +2261,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <p class="bhead__k">UX · 08 — Outcome</p>
     <h1 class="bhead__t" id="h-outcome">What shipped, and what it does not claim</h1>
     <p class="bhead__d">
-      Version 0.4.0-beta is three working surfaces, a token layer that drives every
+      Version 0.4.1-beta is three working surfaces, a token layer that drives every
       one of them, and three gates that fail a build before a regression reaches
       a user. The boundaries are stated as plainly as the results — a case study
       that only lists wins is a brochure.
@@ -2169,9 +2277,23 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <div class="pan"><div class="pan__h"><span class="pan__n">Record &amp; access</span><span class="pan__s">side panel</span></div>
       <div class="pan__b"><p style="margin:0;font-size:14px">Follows the Salesforce tab, reads the record on screen, and answers who can
         see it and by which route — owner, hierarchy, sharing rule.</p></div></div>
-    <div class="pan"><div class="pan__h"><span class="pan__n">Logs &amp; events</span><span class="pan__s">two consoles</span></div>
-      <div class="pan__b"><p style="margin:0;font-size:14px">A log analyzer with sixteen diagnosis rules and a structural line navigator;
-        a live event monitor with follow-and-pause and drop accounting.</p></div></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">Dev Console</span><span class="pan__s">five tools, one tab</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">A log analyzer with sixteen diagnosis rules, a live event monitor with
+        follow-and-pause and drop accounting, an Anonymous Apex runner, an HTTP
+        callout tester and a GraphQL explorer — on a rail, so switching keeps
+        state.</p></div></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">Activity Tracer</span><span class="pan__s">across transactions</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">One action followed through every transaction it caused, across identities and
+        separate logs. Seven kinds of handoff, each edge carrying its evidence and
+        how far to trust it, and unlogged hops shown rather than skipped.</p></div></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">Data Loader</span><span class="pan__s">a page of its own</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">Insert, update, upsert and delete from a file or a query, in six phases
+        each named after the question it answers — with a preflight that says what
+        would fail before anything is written.</p></div></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">Two languages</span><span class="pan__s">switched in-app</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">English and Spanish from one catalog layer the product owns, because
+        <code class="doc-inline">chrome.i18n</code> cannot change language without a
+        browser restart. The Spanish catalog loads only if it is chosen.</p></div></div>
   </div>
 
   <h2 class="sec-t">Measured</h2>
@@ -2179,8 +2301,8 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <table class="t">
       <thead><tr><th>Measure</th><th>Value</th><th>What it means</th></tr></thead>
       <tbody>
-        <tr><td>Packaged extension</td><td>953 kB</td><td>Down from 883 kB, after the gated Chain UI and its graph library left the bundle.</td></tr>
-        <tr><td>Automated suite</td><td>3,937 tests · 285 files</td><td>Fast and deterministic. Every Salesforce integration is mocked.</td></tr>
+        <tr><td>Packaged extension</td><td>1,224 kB</td><td>Zipped, as the store receives it. Larger than the 756 kB left after the Chain UI was cut, because a Console, a Data Loader, a tracer and a second language catalog have shipped since. What a session does not open, it does not fetch: the spreadsheet writer, the Spanish catalog and the trace map are each their own chunk.</td></tr>
+        <tr><td>Automated suite</td><td>4,532 tests · 333 files</td><td>Fast and deterministic. Every Salesforce integration is mocked.</td></tr>
         <tr><td>Design tokens</td><td>2 hue angles</td><td>The whole palette derives from two custom properties, which is what makes a user-set accent possible with no per-component overrides.</td></tr>
         <tr><td>Build gates</td><td>3</td><td>Stylesheet ceiling, accessibility scan, cross-browser namespace audit. Each fails the build, not the review.</td></tr>
       </tbody>
@@ -2194,11 +2316,11 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
         automated suite. Whether a session survives a Setup-domain hop is a
         judgement about a running system, and only a functional pass against a real
         org can make it.</p></div></div>
-    <div class="pan"><div class="pan__h"><span class="pan__n">Two features ship dark</span></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">Three features ship dark</span></div>
       <div class="pan__b"><p style="margin:0;font-size:14px">Chain Mode — a visual canvas for multi-step query workflows — is built and
-        gated off. The element picker is gated pending a privacy-disclosure update.
-        Neither is reachable, and the service worker refuses chain execution rather
-        than relying on hidden UI.</p></div></div>
+        gated off, with the element picker and the event simulator behind their own
+        flags. None is reachable, and the service worker refuses chain execution
+        rather than relying on hidden UI.</p></div></div>
     <div class="pan"><div class="pan__h"><span class="pan__n">The event harness proves the interface only</span></div>
       <div class="pan__b"><p style="margin:0;font-size:14px">Synthetic events are injected at the point a real batch lands, so everything
         downstream behaves identically — and nothing upstream is exercised. A green
@@ -2218,13 +2340,16 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   </p>
   <div class="ev">
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
-      <div class="ev__b"><b>3,937 tests across 285 files, all passing</b> — full suite run
-        1 August 2026, alongside a clean typecheck and lint. Fast and deterministic;
-        every Salesforce integration in it is mocked.</div></div>
+      <div class="ev__b"><b>4,532 tests across 333 files, all passing</b> — full suite run
+        17 August 2026, alongside a clean typecheck and lint. Fast and deterministic;
+        every Salesforce integration in it is mocked. The number is read from that
+        run when this page is built, so it cannot describe an earlier one.</div></div>
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
-      <div class="ev__b"><b>883 kB → 953 kB packaged.</b> Taken at the build, either side of
-        removing the gated Chain UI. The graph library it depended on left with it,
-        so the saving was roughly double the headline chunk.</div></div>
+      <div class="ev__b"><b>1,224 kB packaged</b>, zipped as the store receives it. The cut
+        recorded below took the package from 883 kB to 756 kB; the tools that shipped
+        after it are what account for the difference between that figure and this
+        one. Both numbers are on the page because reporting only the fall would be
+        the more flattering half of one measurement.</div></div>
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
       <div class="ev__b"><b>Three build gates, each failing the build rather than the review</b>
         — a stylesheet line ceiling, an accessibility scan, and a cross-browser
@@ -2234,6 +2359,19 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
         defects the automated suite structurally could not: <b>a read-only reason
         reachable only by hover</b>, and <b>a streaming channel rejected with a raw
         error</b>. Both are fixed; both are the argument for keeping a live layer.</div></div>
+    <div class="ev__r"><div class="ev__t ev__t--o">Observed</div>
+      <div class="ev__b">A live pass over the tracer against a Developer Edition org found two
+        things no unit test could: the <b>Automated Process and Platform Integration
+        filters searched ordinary users</b>, so the single system user each one exists
+        to find was unreachable, and a <b>results dock that opened at one visible row
+        with no way to resize it</b>. Both fixed.</div></div>
+    <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
+      <div class="ev__b">An adversarial review of the write guards, the import path and the
+        message boundary — <b>two independent passes, five findings, all fixed</b>, each
+        now pinned by a harness of the payloads that defeated it. The sharpest:
+        <code class="doc-inline">delete([SELECT Id FROM Account]);</code> ran against
+        production with no confirmation, because the guard required whitespace after
+        the keyword and Apex does not.</div></div>
     <div class="ev__r"><div class="ev__t ev__t--o">Observed</div>
       <div class="ev__b">Setup pages are served from a separate isolation domain. Without
         that host pattern registered, <b>the launcher never appears where an admin
@@ -2252,8 +2390,9 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     Chain Mode is a flag flip and a branch restore away — that cheapness was the
     design goal when it was parked, and a tidier removal that made the feature
     expensive to bring back would have been the worse call. Ahead of that: store
-    submission, and finishing the element picker behind its flag once the privacy
-    disclosure covers it.
+    submission, a live pass over the Console tools that has not been run to a
+    recorded script yet, and finishing the element picker behind its flag once the
+    privacy disclosure covers it.
   </p>
 </section>
 
@@ -2265,8 +2404,8 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
   <div class="stats" style="margin-bottom:30px">
     <div><p class="k">Manifest</p><p class="v">V3</p></div>
-    <div><p class="k">Tests</p><p class="v"><em>3,937</em></p></div>
-    <div><p class="k">Packaged</p><p class="v">766<span style="font-size:15px"> kB</span></p></div>
+    <div><p class="k">Tests</p><p class="v"><em>4,532</em></p></div>
+    <div><p class="k">Packaged</p><p class="v">1,224<span style="font-size:15px"> kB</span></p></div>
     <div><p class="k">Third-party calls</p><p class="v"><em>0</em></p></div>
     <div><p class="k">Enforcement gates</p><p class="v">3</p></div>
   </div>
@@ -2321,7 +2460,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
         <g class="hf-node">
           <rect x="8" y="16" width="116" height="28" rx="4"/><text x="66" y="34">builder tab</text>
           <rect x="8" y="56" width="116" height="28" rx="4"/><text x="66" y="74">side panel</text>
-          <rect x="8" y="96" width="116" height="28" rx="4"/><text x="66" y="114">mini apps</text>
+          <rect x="8" y="96" width="116" height="28" rx="4"/><text x="66" y="114">loader page</text>
           <rect x="8" y="136" width="116" height="28" rx="4"/><text x="66" y="154">content script</text>
         </g>
         <g class="hf-edge">
@@ -2361,7 +2500,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
   <h3 class="doc-h3" id="in-process-model">Process model</h3>
 
-  <p class="doc-p">Five kinds of JavaScript context ship, declared in the manifest. They do not share memory; everything between them is message passing.</p>
+  <p class="doc-p">Five kinds of JavaScript context ship, declared in the manifest. They do not share memory; everything between them is message passing. The Dev Console is listed below without being one of them — it is a mode inside the builder tab, and it is here because until recently it was two contexts of its own.</p>
 
   <dl class="doc-defs">
     <dt>Service worker</dt>
@@ -2371,13 +2510,16 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <dd>Injected at <code class="doc-inline">document_idle</code> into <code class="doc-inline">*.my.salesforce.com</code>, <code class="doc-inline">*.lightning.force.com</code> and <code class="doc-inline">*.salesforce.com</code>. It does two small things and nothing else: it infers the org identity from <code class="doc-inline">window.location.hostname</code> and fires <code class="doc-inline">REPORT_ACTIVE_ORG</code> at the service worker, and it grafts a style-isolated edge launcher into a shadow root on the page. It never touches the session — it structurally cannot, because <code class="doc-inline">sid</code> is <code class="doc-inline">HttpOnly</code>. Its <code class="doc-inline">notify()</code> helper guards on <code class="doc-inline">chrome.runtime?.id</code> before sending, because after an extension reload the old content script's runtime is invalidated and <code class="doc-inline">sendMessage</code> throws <em>synchronously</em>, so an attached <code class="doc-inline">.catch()</code> never runs.</dd>
 
     <dt>Builder tab</dt>
-    <dd>The full workbench: a normal extension page opened in its own tab. Multi-tab SOQL/SOSL authoring grouped by org, results grid, record editing, export, saved queries. The service worker keeps a per-window singleton registry so exactly one builder tab exists per Chrome window.</dd>
+    <dd>The full workbench: a normal extension page opened in its own tab, holding three modes — Query, Chain and Console. Multi-tab SOQL/SOSL authoring grouped by org, results grid, record editing, export, saved queries. The service worker keeps a per-window singleton registry so exactly one builder tab exists per Chrome window.</dd>
 
     <dt>Side panel</dt>
     <dd>Registered as <code class="doc-inline">side_panel.default_path</code>. A narrow companion surface that follows whatever Salesforce page is in the active tab.</dd>
 
-    <dt>Two standalone mini apps</dt>
-    <dd>A platform-event monitor and a debug-log analyzer, each its own extension page in its own tab. They are deliberately not builder modes: the product fixes the builder at Query and Chain (design decision DD-01), and both of these tools want the whole window.</dd>
+    <dt>Dev Console — five tools inside the builder tab</dt>
+    <dd>An Anonymous Apex runner, an HTTP callout tester, a GraphQL explorer, a platform-event monitor and a debug-log analyzer, on a rail so that switching between them unmounts nothing. The event monitor and the log analyzer were standalone extension pages until August 2026, and the revision is worth stating plainly: <b>DD-01 originally fixed the builder at Query and Chain, and it now reads Query, Chain and Console.</b> Being separate pages meant a user could open a second copy of either tool — a second subscription to the same channel, a second open log — with nothing in the interface to say which one they were reading. The pages stopped being built rather than being left as a trap, and their keys were removed from the app registry so nothing can route to them by accident.</dd>
+
+    <dt>Data Loader</dt>
+    <dd>Its own extension page, and the one tool that genuinely needs to be. MV3 stops a service-worker handler at five minutes and a single fetch at thirty seconds, so the batching and polling loop for a load of any size has to live in a real tab. This is the same reasoning that makes the Console tools <em>not</em> pages, arriving at the opposite answer because the constraint is different.</dd>
   </dl>
 
   <p class="doc-p">There is no popup. The manifest's <code class="doc-inline">action</code> block has no <code class="doc-inline">default_popup</code>; clicking the toolbar icon opens the builder directly through <code class="doc-inline">action.onClicked</code> in the service worker, which also forces Chrome's <code class="doc-inline">openPanelOnActionClick</code> off so a stale profile setting cannot hijack the icon. Two keyboard commands are declared: <code class="doc-inline">Ctrl+Shift+Q</code> opens the builder, <code class="doc-inline">Ctrl+Shift+P</code> opens the side panel.</p>
@@ -2590,7 +2732,7 @@ async function send&lt;T&gt;(
 
   <h3 class="doc-h3" id="ui-surfaces">Surfaces</h3>
 
-  <p class="doc-p">Four user-facing surfaces ship, and the split between them is intentional rather than incidental. Each one is sized to the job.</p>
+  <p class="doc-p">The split between surfaces is intentional rather than incidental: each one is sized to the job, and the two that stopped being surfaces are as informative as the ones that remain.</p>
 
   <dl class="doc-defs">
     <dt>Builder tab</dt>
@@ -2599,16 +2741,19 @@ async function send&lt;T&gt;(
     <dt>Side panel</dt>
     <dd>The glance. It follows the Salesforce page in the active tab and shows what that page is about: record inspector, key info, an access breakdown, a mini query box, schema explore, plus event and log views. Reach for it when you want to know something about the record in front of you without leaving the page. Five destinations sit on a rail (Record, Query, Explore, Events, Logs); the last three are sticky and are never auto-selected away when the active tab changes. Pinning snapshots the current context while the live context keeps tracking underneath, so unpinning lands on the page you are actually on rather than on whatever was showing when you pinned — and a banner appears when the two have diverged.</dd>
 
-    <dt>Events mini app</dt>
-    <dd>A full-window platform-event monitor: rate chart over time, grouped delivery list, replay from a replay id. It is a separate extension page rather than a builder mode because the product deliberately fixes the builder at two modes, and this tool needs three columns.</dd>
+    <dt>Dev Console — a mode, not a page</dt>
+    <dd>Five tools in the builder tab: an Anonymous Apex runner, an HTTP callout tester, a GraphQL explorer, a platform-event monitor (rate chart over time, grouped delivery list, replay from a replay id) and a debug-log analyzer (governor-limit bars, self-time hot spots, repeated-SOQL detection, an execution tree, and a virtualized raw-line viewer — a 500KB log is roughly ten thousand lines, and one DOM node per line froze the tab). The last two were separate extension pages, on the reasoning that the builder was fixed at two modes and each tool wanted the whole window. They got the whole window either way; what being a page also gave them was the ability to exist twice at once.</dd>
 
-    <dt>Logs mini app</dt>
-    <dd>A full-window debug-log analyzer: governor-limit bars, self-time hot spots, repeated-SOQL detection, an execution tree, and a virtualized raw-line viewer (a 500KB log is roughly ten thousand lines, and one DOM node per line froze the tab).</dd>
+    <dt>Activity Tracer — an advanced mode of one tool</dt>
+    <dd>Inside the log analyzer rather than beside it, which is an architectural decision and not a menu one: it inherits that tool's org context, log list, cross-log search, trace-flag management and production-write confirmations, and so re-fetches nothing and re-guards nothing. What is new is the correlation engine and the timeline; the entire capture and viewing surface is reuse.</dd>
+
+    <dt>Data Loader</dt>
+    <dd>The one tool that is a page on purpose. A load has to survive longer than MV3 allows a worker to live, so a real tab owns the batching and polling loop.</dd>
   </dl>
 
-  <p class="doc-p">The dividing line: the panel stays the glance, these are the workbench. The event and log <em>streams</em> themselves live in the service worker, so both mini apps can be closed and reopened without losing history.</p>
+  <p class="doc-p">The dividing line: the panel stays the glance, the builder tab is the workbench. The event and log <em>streams</em> themselves live in the service worker, so a tool can be left and returned to without losing history — which is also why the Console puts its tools on a rail instead of in a tab row. Nothing unmounts, so a script stays mid-edit and an open log stays open.</p>
 
-  <p class="doc-p">A fifth surface was removed. There is no popup — it was removed in 0.2.0 and the toolbar icon opens the builder directly. The popup had been an extra hop to reach the surface people actually wanted.</p>
+  <p class="doc-p">One more surface was removed earlier. There is no popup — it was removed in 0.2.0 and the toolbar icon opens the builder directly. The popup had been an extra hop to reach the surface people actually wanted.</p>
 
   <h3 class="doc-h3" id="ui-state">State</h3>
 
@@ -2636,7 +2781,7 @@ async function send&lt;T&gt;(
     <li><strong>Single-surface widget geometry.</strong> Sidebar collapse and inspector width live in their own hooks with their own <code class="doc-inline">localStorage</code> keys. The rule is about cross-component concerns; a value only one component reads does not belong in a global store.</li>
   </ul>
 
-  <p class="doc-note">The side panel and the two mini apps do not use the store at all. The panel entrypoint says so directly — it is a lightweight consumer surface with no builder store. It runs on its own hooks (<code class="doc-inline">usePanelContext</code>, <code class="doc-inline">usePanelRecord</code>, <code class="doc-inline">usePanelSchema</code>, <code class="doc-inline">useRecordAccess</code>) over the same typed client, with no polling: it fetches page context once on mount and then follows a service-worker broadcast. What it does share with the builder is the CSS design system and the API client — the two things worth sharing.</p>
+  <p class="doc-note">The side panel does not use the store at all, and neither did the two mini apps while they were pages. The panel entrypoint says so directly — it is a lightweight consumer surface with no builder store. It runs on its own hooks (<code class="doc-inline">usePanelContext</code>, <code class="doc-inline">usePanelRecord</code>, <code class="doc-inline">usePanelSchema</code>, <code class="doc-inline">useRecordAccess</code>) over the same typed client, with no polling: it fetches page context once on mount and then follows a service-worker broadcast. What it does share with the builder is the CSS design system and the API client — the two things worth sharing.</p>
 
   <p class="doc-warn"><code class="doc-inline">usePanelContext</code> normalizes <code class="doc-inline">*.salesforce-setup.com</code> and <code class="doc-inline">*.lightning.force.com</code> to the <code class="doc-inline">*.my.salesforce.com</code> API host before making any request, because the service worker keys sessions and describes on the API host. Without that rewrite a panel request made from a Setup page resolves no session and fails with <code class="doc-inline">NO_SESSION</code>.</p>
 
@@ -2788,7 +2933,7 @@ const INLINE_STYLE_CEILING = 665;</code></pre>
 
   <h3 class="doc-h3" id="ui-a11y-gate">The accessibility gate</h3>
 
-  <p class="doc-p">A source-level scan over the surfaces that actually ship — the panel, the mini apps, and the shipping builder surfaces (Query Mode, drawer, shared components, the settings/help/about overlays, palette, toasts). It parses JSX opening tags with a hand-written scanner rather than a regex, because attribute values contain <code class="doc-inline">&gt;</code> characters from arrow functions and a naive pattern truncates the attribute list, making every label after the first arrow function look missing.</p>
+  <p class="doc-p">A source-level scan over the surfaces that actually ship — the panel, the Console tools, and the shipping builder surfaces (Query Mode, drawer, shared components, the settings/help/about overlays, palette, toasts). It parses JSX opening tags with a hand-written scanner rather than a regex, because attribute values contain <code class="doc-inline">&gt;</code> characters from arrow functions and a naive pattern truncates the attribute list, making every label after the first arrow function look missing.</p>
 
   <p class="doc-p">Seven assertions, each requiring an empty findings list:</p>
 
@@ -2858,7 +3003,7 @@ const INLINE_STYLE_CEILING = 665;</code></pre>
     <div><p class="k">Panel cold start</p><p class="v"><em>754</em><span style="font-size:15px"> ms</span></p></div>
     <div><p class="k">Find, 10k lines</p><p class="v">1–3<span style="font-size:15px"> ms</span></p></div>
     <div><p class="k">DOM nodes, 10k rows</p><p class="v">~90</p></div>
-    <div><p class="k">Packaged</p><p class="v">766<span style="font-size:15px"> kB</span></p></div>
+    <div><p class="k">Packaged</p><p class="v">1,224<span style="font-size:15px"> kB</span></p></div>
   </div>
 
   <h2 class="sec-t">The four techniques</h2>
@@ -2932,6 +3077,38 @@ for (let i = 0; i &lt; take.length; i++)
     </p>
   </div>
 
+  <h2 class="sec-t">Correlate: scan where the data already is</h2>
+  <div class="pan" style="margin-bottom:22px">
+    <div class="pan__h"><span class="pan__n">Dozens of logs, one chain</span><span class="pan__s">the tracer's load-bearing decision</span></div>
+    <div class="pan__b">
+      <p style="margin:0 0 10px;font-size:14px">
+        The parse above is the right shape for reading one log and the wrong shape
+        for correlating fifty. Following one action across a chain means looking at
+        every candidate log in a time window — and at 18.5 seconds for an 18.6 MB
+        log, doing that with the reading parser is not a slow feature, it is an
+        impossible one.
+      </p>
+      <p style="margin:0 0 10px;font-size:14px">
+        So the tracer does not use it. A second, single-pass indexer extracts only
+        what the correlator needs — record ids, job ids, event types, code units,
+        the exception, three counters — with no object per line. It is fed
+        <b>chunks from a stream inside the service worker</b>: read, scan, discard,
+        keep about 2 kB. The graph is assembled there and only the graph is sent
+        to the interface.
+      </p>
+      <p style="margin:0;font-size:14px">
+        The alternative was to ship the bodies to the UI thread and index them
+        where the components are. A record-Id seed touching dozens of logs would
+        have moved hundreds of megabytes across the message boundary to produce a
+        diagram measured in kilobytes. A log body crosses only when a reader opens
+        that specific transaction.
+      </p>
+    </div>
+    <p class="pan__f"><b>The index can also be cached forever.</b> A debug log is immutable once
+      Salesforce has written it, so a stored index cannot go stale — there is no
+      invalidation policy in that cache because there cannot be one.</p>
+  </div>
+
   <h2 class="sec-t">Concurrency</h2>
   <div class="grid g2" style="margin-bottom:22px">
     <div class="pan">
@@ -2955,15 +3132,21 @@ for (let i = 0; i &lt; take.length; i++)
         <div class="tw"><table class="t">
           <thead><tr><th>Chunk</th><th>Strategy</th></tr></thead>
           <tbody>
-            <tr><td>xlsx · codemirror</td><td>Split to vendor chunks, lazy-loaded at point of use</td></tr>
+            <tr><td>xlsx</td><td>Own vendor chunk, <code>await import</code> at the point a file is read or written</td></tr>
+            <tr><td>Spanish catalog</td><td>Own chunk — fetched only if a reader switches language</td></tr>
             <tr><td>Overlays, Tour, Intro</td><td><code>React.lazy</code> — rarely opened</td></tr>
-            <tr><td>Chain UI · React Flow</td><td><b>Not in the bundle</b> — 419 kB excluded while the feature is gated</td></tr>
+            <tr><td>Trace map · React Flow</td><td>In the package, behind a <code>lazy</code> boundary — the graph library arrives only when the tracer's map view does</td></tr>
+            <tr><td>Chain UI</td><td><b>Not in the bundle</b> — deleted rather than shipped unreachable while the feature is gated</td></tr>
             <tr><td>Source maps</td><td>Off in production — was 7.7 MB of a 10 MB package</td></tr>
           </tbody>
         </table></div>
       </div>
-      <p class="pan__f"><b>883 kB → 953 kB.</b> The largest single win was deleting a feature that
-        shipped disabled: the code was still downloaded by everyone who installed it.</p>
+      <p class="pan__f"><b>The package is 1,224 kB, and it has gone both ways.</b> Cutting the gated
+        Chain UI took it from 883 kB to 756 kB — the largest single win was deleting a
+        feature that shipped disabled, because the code was still downloaded by
+        everyone who installed it. The Console, the Data Loader and the
+        tracer shipped after that, and it has grown past where it started. What that buys is that the growth is in chunks a
+        session fetches only if it opens them.</p>
     </div>
   </div>
 
@@ -3055,6 +3238,40 @@ for (let i = 0; i &lt; take.length; i++)
     <b>Never trust a hostname for a write decision.</b>
   </div>
 
+  <h2 class="sec-t">Attacking the guards on purpose</h2>
+  <p class="lede">
+    The guards above all had passing tests. A passing test only proves what its
+    author thought to try, so the write guards, the file-import path, host
+    validation and the message boundary were reviewed adversarially instead —
+    two independent passes, each asked to defeat them rather than confirm them.
+    Five findings, all fixed, each one now pinned by a harness built from the
+    payload that got through.
+  </p>
+  <div class="tw" style="margin-bottom:22px">
+    <table class="t">
+      <thead><tr><th>What got through</th><th>Why the guard missed it</th></tr></thead>
+      <tbody>
+        <tr><td><code>delete([SELECT Id FROM Account]);</code> against production, no confirmation</td>
+          <td>The matcher required whitespace after the DML keyword. Apex does not, so removing one space hid a full-table delete from the guard — in any capitalisation, for all six DML statements.</td></tr>
+        <tr><td>A call into arbitrary Apex, read as a harmless local method call</td>
+          <td>Identifiers inside a SOQL <code>WHERE</code> clause were mistaken for local variable declarations, so the receiver looked like a local rather than a class.</td></tr>
+        <tr><td>Exported and copied data carrying live spreadsheet formulas</td>
+          <td>A value beginning <code>=</code>, <code>+</code>, <code>-</code> or <code>@</code> executes on open in Excel, Sheets, Numbers and LibreOffice — and a Salesforce text field can be written by anyone with a Web-to-Lead form. Now neutralised in CSV, TSV and both clipboard paths, with numbers left intact so totals still add up.</td></tr>
+        <tr><td>Shell syntax in <em>Copy as cURL</em></td>
+          <td>Every value in the generated command was quoted except the HTTP method.</td></tr>
+        <tr><td>A single-operation GraphQL document asking which operation to run</td>
+          <td>A brace inside a variable default invented a second operation.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note" style="margin-bottom:24px">
+    <b>Two write scanners, deliberately opposite.</b> The Apex scan is
+    case-insensitive because Apex is; the GraphQL operation check is
+    case-sensitive because <code>mutation</code> is a keyword and GraphQL is. They
+    look like an inconsistency and a later reader is likely to try to reconcile
+    them, so each states in its own comment why it is not the other one.
+  </div>
+
   <h2 class="sec-t">Failure modes handled explicitly</h2>
   <div class="tw" style="margin-bottom:24px">
     <table class="t">
@@ -3105,7 +3322,7 @@ for (let i = 0; i &lt; take.length; i++)
   <h2 class="sec-t">What each layer can prove</h2>
   <div class="grid g2">
     <div class="pan">
-      <div class="pan__h"><span class="pan__n">What 3,937 tests prove</span></div>
+      <div class="pan__h"><span class="pan__n">What 4,532 tests prove</span></div>
       <div class="pan__b">
         <p style="margin:0;font-size:14px">Pure logic, parsing, diagnosis rules, access verdicts, follow behaviour,
         message shapes, manifest permissions. All of it fast and deterministic.</p>
@@ -3124,11 +3341,22 @@ for (let i = 0; i &lt; take.length; i++)
       </div>
     </div>
   </div>
+  <div class="pan" style="margin-top:18px">
+    <div class="pan__h"><span class="pan__n">What only an adversarial pass proves</span></div>
+    <div class="pan__b">
+      <p style="margin:0;font-size:14px">That a guard holds against input written to defeat it, rather than input
+      written to demonstrate it. Every one of the five findings above sat behind a
+      green test, and several turned on a single character.</p>
+      <p style="margin:0;font-size:14px"><b>So it is a standing layer, not a milestone.</b> The payloads live in the
+      suite now, which means the next person to widen one of those patterns has to
+      get past the exact input that beat it last time.</p>
+    </div>
+  </div>
 
   <dl class="take">
     <div><dt>Decision</dt><dd>Put the properties review reads past into gates that fail the build.</dd></div>
     <div><dt>Evidence</dt><dd>A stylesheet ceiling, an accessibility scan and a namespace audit — each one catching a class of drift that degrades gradually rather than breaking.</dd></div>
-    <div><dt>Result</dt><dd>3,937 automated tests, plus three gates that state their own scope including what they do not cover.</dd></div>
+    <div><dt>Result</dt><dd>4,532 automated tests, plus three gates that state their own scope including what they do not cover.</dd></div>
   </dl>
 </section>
 
@@ -3152,7 +3380,7 @@ for (let i = 0; i &lt; take.length; i++)
   </p>
   <div class="doc-table-wrap">
     <table class="doc-table">
-      <caption class="doc-cap">Measured at the cut, 31 July 2026 — not current totals. The suite has since grown to 3,937 tests and the package to 953 kB as later work landed.</caption>
+      <caption class="doc-cap">Measured at the cut, 31 July 2026 — not current totals. The suite has since grown to 4,532 tests and the package to 1,224 kB as later work landed.</caption>
         <thead><tr><th>Artifact</th><th>Before the cut</th><th>After the cut</th></tr></thead>
       <tbody>
         <tr><td>Chain UI chunk</td><td>277 kB</td><td>removed</td></tr>
@@ -3167,6 +3395,15 @@ for (let i = 0; i &lt; take.length; i++)
     canvas, so the real saving was nearly double the headline chunk. The test
     count dropping is not a regression — those tests covered the interface that
     left with it.
+  </p>
+  <p class="doc-p">
+    React Flow has since come back, which is worth recording rather than
+    quietly leaving the table to imply otherwise. The Activity Tracer's map view
+    draws a chain as a graph, and that is the same job the library was there for
+    the first time. It arrives behind a <code class="doc-inline">lazy</code>
+    boundary now, so it is in the package but not in the first load of anything —
+    the lesson from the cut was about code every user downloads, not about the
+    library.
   </p>
   <p class="doc-p">
     The important part is what stayed. The execution engine, the shared
