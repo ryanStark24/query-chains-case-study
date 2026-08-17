@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Query Chains — A Case Study</title>
-<meta name="description" content="Query Chains — a design and engineering case study. One Salesforce investigation carried across every surface of the product, then twelve chapters on how it was designed and built.">
+<meta name="description" content="Query Chains — a design and engineering case study. One Salesforce investigation carried across every surface of the product, the decisions behind it, and an appendix for the reader who wants the whole record.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:title" content="Query Chains — A Case Study">
-<meta property="og:description" content="Query Chains — a design and engineering case study. One Salesforce investigation carried across every surface of the product, then twelve chapters on how it was designed and built.">
+<meta property="og:description" content="Query Chains — a design and engineering case study. One Salesforce investigation carried across every surface of the product, the decisions behind it, and an appendix for the reader who wants the whole record.">
 <meta property="og:type" content="article">
 </head>
 <body>
@@ -154,7 +154,12 @@ h1,h2,h3,h4 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02
     padding:11px 12px; white-space:nowrap; }
   .rail__i[aria-current="true"] { border-left:0; border-bottom-color:var(--brand); }
   .top__now { display:none; }
-  .fastread { display:none; }
+  .fastread { display:block; width:100%; margin:0;
+      padding:9px 16px; border-bottom:1px solid var(--rule); background:var(--sunk); }
+    .fastread button { width:100%; text-align:center; font-size:12px; padding:11px 12px; }
+    /* The rail is a column on a phone: control on its own row, chapters below. */
+    .rail { display:flex; flex-direction:column; }
+    .rail__in { width:100%; }
 }
 @media (max-width:640px){ .totop { right:12px; bottom:12px; } }
 
@@ -649,8 +654,6 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   text-transform:uppercase; padding:8px 10px; transition:color .14s, border-color .14s; }
 .fastread button:hover { color:var(--ink); border-color:var(--brand-dim); }
 .fastread button[aria-pressed="true"] { border-color:var(--brand); color:var(--brand-ink); }
-.rail[data-fast="1"] .rail__i:not([data-core="1"]) { opacity:.34; }
-.rail[data-fast="1"] .rail__i:not([data-core="1"]):hover { opacity:1; }
 
 /* ══ Evidence ledger ══════════════════════════════════════════════════════ */
 .ev { border:1px solid var(--rule); border-radius:9px; overflow:hidden; }
@@ -736,6 +739,48 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 .flow-lane-t { fill:var(--ink-quiet); font-family:var(--f-mono); font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; }
 
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+
+/* ── Two layers ──────────────────────────────────────────────────────────
+   The core story is the page; the twelve chapters are an appendix behind a
+   gate. Closed state is applied by script, never by default: with no JS the
+   appendix is simply open, so every board stays reachable and printable —
+   the same reasoning the navigation script already documents. */
+.cta { margin:44px 0 0; padding:30px 32px; border:1px solid var(--rule-firm);
+  border-radius:12px; background:
+    radial-gradient(120% 140% at 100% 0%, color-mix(in oklch, var(--brand) 9%, transparent), transparent 60%),
+    var(--raise); }
+.cta__k { font-family:var(--f-mono); font-size:9.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--brand); margin:0 0 10px; }
+.cta__t { font-family:var(--f-display); font-size:clamp(21px,3.4vw,29px); line-height:1.18;
+  font-weight:600; letter-spacing:-.015em; margin:0 0 12px; color:var(--ink); }
+.cta__b { max-width:62ch; margin:0 0 20px; font-size:15px; line-height:1.62; color:var(--ink-mid); }
+.cta__row { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 16px; }
+.cta__row .btn { font-size:13.5px; padding:10px 18px; }
+.cta__f { margin:0; font-size:12.5px; line-height:1.55; color:var(--ink-quiet); max-width:58ch; }
+
+.applayer { border-top:1px solid var(--rule); margin-top:54px; padding-top:0; }
+.appgate { position:sticky; top:57px; z-index:38; display:flex; flex-wrap:wrap;
+  gap:12px; align-items:center; padding:14px 0; background:var(--bg);
+  border-bottom:1px solid var(--rule); }
+.appgate__t { font-family:var(--f-mono); font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-quiet); margin:0; }
+.appgate__n { margin:0 auto 0 0; font-size:13px; color:var(--ink-quiet); }
+.appgate button { cursor:pointer; border-radius:6px; border:1px solid var(--rule-firm);
+  background:var(--raise); color:var(--ink-mid); font-family:var(--f-mono);
+  font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:9px 14px; }
+.appgate button:hover { color:var(--ink); border-color:var(--brand-dim); }
+.appgate button[aria-expanded="true"] { border-color:var(--brand); color:var(--brand-ink); }
+.applayer[data-open="0"] > .board { display:none; }
+.applayer[data-open="0"] .appgate { position:static; border-bottom:0; }
+/* Chapters belong to the appendix, so the rail hides them until it is open. */
+.rail[data-app="0"] .rail__i[data-layer="appendix"],
+.rail[data-app="0"] .rail__g[data-layer="appendix"] { display:none; }
+
+@media (max-width:1040px) {
+  .appgate { top:100px; }
+  .appgate button { width:100%; }
+  .cta { padding:24px 20px; border-radius:10px; }
+}
 </style>
 
 
@@ -747,23 +792,29 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   <div class="prog" aria-hidden="true"><i id="progbar"></i></div>
 </header>
 <div class="shell">
-  <nav class="rail" aria-label="Contents" id="rail">
+  <nav class="rail" aria-label="Contents" id="rail" data-app="0">
+    <p class="fastread"><button type="button" id="fast" aria-expanded="false" aria-controls="appendix">Engineering appendix</button></p>
     <div class="rail__in">
-      <p class="fastread"><button type="button" id="fast" aria-pressed="false">5-minute read</button></p>
-      <p class="rail__g">UI / UX</p>
-      <a class="rail__i" href="#b-overview" data-b="overview" data-core="1"><span class="n">01</span>Overview</a>
-      <a class="rail__i" href="#b-research" data-b="research" data-core="1"><span class="n">02</span>The problem</a>
-      <a class="rail__i" href="#b-patterns" data-b="patterns" data-core="1"><span class="n">03</span>Direction</a>
-      <a class="rail__i" href="#b-surfaces" data-b="surfaces" data-core="1"><span class="n">04</span>Structure</a>
-      <a class="rail__i" href="#b-design" data-b="design"><span class="n">05</span>Designing it</a>
-      <a class="rail__i" href="#b-foundations" data-b="foundations"><span class="n">06</span>The system</a>
-      <a class="rail__i" href="#b-components" data-b="components"><span class="n">07</span>Components</a>
-      <a class="rail__i" href="#b-outcome" data-b="outcome" data-core="1"><span class="n">08</span>Outcome</a>
-      <p class="rail__g">Technical</p>
-      <a class="rail__i" href="#b-architecture" data-b="architecture"><span class="n">01</span>Architecture</a>
-      <a class="rail__i" href="#b-performance" data-b="performance"><span class="n">02</span>Performance</a>
-      <a class="rail__i" href="#b-reliability" data-b="reliability"><span class="n">03</span>Reliability</a>
-      <a class="rail__i" href="#b-decisions" data-b="decisions"><span class="n">04</span>Decisions</a>
+      <p class="rail__g">The case study</p>
+      <a class="rail__i" href="#b-overview" data-b="overview"><span class="n">01</span>The case</a>
+      <a class="rail__i" href="#s-insight" data-b="s-insight"><span class="n">02</span>The insight</a>
+      <a class="rail__i" href="#s-response" data-b="s-response"><span class="n">03</span>What it does</a>
+      <a class="rail__i" href="#s-decisions" data-b="s-decisions"><span class="n">04</span>Decisions</a>
+      <a class="rail__i" href="#s-outcome" data-b="s-outcome"><span class="n">05</span>Outcome</a>
+      <a class="rail__i" href="#s-next" data-b="s-next"><span class="n">06</span>Next</a>
+      <p class="rail__g" data-layer="appendix">UI / UX</p>
+      <a class="rail__i" data-layer="appendix" href="#b-research" data-b="research"><span class="n">01</span>The problem</a>
+      <a class="rail__i" data-layer="appendix" href="#b-patterns" data-b="patterns"><span class="n">02</span>Direction</a>
+      <a class="rail__i" data-layer="appendix" href="#b-surfaces" data-b="surfaces"><span class="n">03</span>Structure</a>
+      <a class="rail__i" data-layer="appendix" href="#b-design" data-b="design"><span class="n">04</span>Designing it</a>
+      <a class="rail__i" data-layer="appendix" href="#b-foundations" data-b="foundations"><span class="n">05</span>The system</a>
+      <a class="rail__i" data-layer="appendix" href="#b-components" data-b="components"><span class="n">06</span>Components</a>
+      <a class="rail__i" data-layer="appendix" href="#b-outcome" data-b="outcome"><span class="n">07</span>Outcome</a>
+      <p class="rail__g" data-layer="appendix">Technical</p>
+      <a class="rail__i" data-layer="appendix" href="#b-architecture" data-b="architecture"><span class="n">01</span>Architecture</a>
+      <a class="rail__i" data-layer="appendix" href="#b-performance" data-b="performance"><span class="n">02</span>Performance</a>
+      <a class="rail__i" data-layer="appendix" href="#b-reliability" data-b="reliability"><span class="n">03</span>Reliability</a>
+      <a class="rail__i" data-layer="appendix" href="#b-decisions" data-b="decisions"><span class="n">04</span>Decisions</a>
     </div>
   </nav>
   <main class="flow"><section class="board" data-sec="ux" id="b-overview" aria-labelledby="h-overview">
@@ -972,27 +1023,7 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     session.
   </p>
 
-  <h2 class="sec-t">Built for the constraints of a browser extension</h2>
-  <p class="lede">
-    One session, no stored credentials, and gates that fail the build rather than
-    the review. Three reasons to read the engineering track.
-  </p>
-  <div class="bridge">
-    <a href="#b-architecture">
-      <span class="bridge__k">Architecture</span>
-      <span class="bridge__t">Three surfaces share one session and one typed message protocol. The credential is read in the service worker and never crosses back.</span>
-      <span class="bridge__m">No OAuth · nothing stored</span></a>
-    <a href="#b-performance">
-      <span class="bridge__k">Performance</span>
-      <span class="bridge__t">A finished feature was cut from the bundle rather than shipped unreachable, the log parse is bounded so a 40 MB file cannot stall the console, and a chain of fifty logs is indexed where the data already is.</span>
-      <span class="bridge__m">1,224 kB packaged · what you do not open, you do not fetch</span></a>
-    <a href="#b-reliability">
-      <span class="bridge__k">Reliability</span>
-      <span class="bridge__t">A stylesheet ceiling, an accessibility scan and a namespace audit each fail the build — and each states what it does not cover.</span>
-      <span class="bridge__m">4,532 tests · 3 gates</span></a>
-  </div>
-
-  <h2 class="sec-t">The thesis</h2>
+  <h2 class="sec-t" id="s-insight">The insight</h2>
   <p class="lede">
     Salesforce tooling asks you to leave. To read a log you open Setup; to check
     who can see a record you open a different page in Setup; to run a query you
@@ -1010,31 +1041,145 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
         never returned to the interface or written to disk.</p></div></div>
   </div>
 
+  <h2 class="sec-t" id="s-response">What the product does about it</h2>
+  <p class="lede">
+    Everything below shares one session, one token layer and one message
+    protocol. Nothing here is a second destination to navigate to.
+  </p>
+  <div class="tw">
+    <table class="t">
+      <tbody>
+        <tr><td style="width:172px"><b>Query</b><br><span class="mono" style="font-size:11px">builder tab</span></td>
+          <td>SOQL and SOSL with schema-backed autocomplete, a synchronous linter, four execution routes chosen by query shape, and a virtualized grid you can edit in place.</td></tr>
+        <tr><td><b>Record &amp; access</b><br><span class="mono" style="font-size:11px">side panel</span></td>
+          <td>Follows the Salesforce tab, reads the record on screen, and answers who can see it and by which route — owner, hierarchy, sharing rule.</td></tr>
+        <tr><td><b>Dev Console</b><br><span class="mono" style="font-size:11px">five tools</span></td>
+          <td>A log analyzer with sixteen diagnosis rules, a live event monitor, an Anonymous Apex runner, an HTTP callout tester and a GraphQL explorer — on a rail, so switching keeps state.</td></tr>
+        <tr><td><b>Activity Tracer</b><br><span class="mono" style="font-size:11px">inside Debug Logs</span></td>
+          <td>One action followed through every transaction it caused, across identities and separate logs, with each handoff carrying its evidence and unlogged hops shown rather than skipped.</td></tr>
+        <tr><td><b>Data Loader</b><br><span class="mono" style="font-size:11px">its own page</span></td>
+          <td>Insert, update, upsert and delete in six phases named after the questions they answer — with a preflight that says what would fail before anything is written.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sec-t" id="s-decisions">The five decisions that shaped it</h2>
+  <p class="lede">
+    Each is recorded with its reasoning in the appendix, because the reasoning is
+    the part that stops a later change from quietly undoing it.
+  </p>
+  <div class="tw">
+    <table class="t">
+      <tbody>
+        <tr><td style="width:210px"><a href="#cs-park">Park a finished feature</a></td>
+          <td>Chain Mode was built, tested and working. It ships disabled and its interface was cut from the bundle — code nobody can reach was still being downloaded by everyone who installed it.</td></tr>
+        <tr><td><a href="#cs-flow">Cross the trust boundary twice</a></td>
+          <td>A query goes UI → service worker → Salesforce and back, and never carries a credential in the returning direction. The session cookie is read in one context and stays there.</td></tr>
+        <tr><td><a href="#cs-policy">Write the privacy policy from the code</a></td>
+          <td>Derived from the permission set and the message handlers rather than from a description of the product, and kept identical in three places that must agree.</td></tr>
+        <tr><td><a href="#cs-verify">Run two verification layers</a></td>
+          <td>An automated gate and a functional pass against a real org, neither substituting for the other — plus a list of deliberate behaviours that read as defects, so a tester does not file them.</td></tr>
+        <tr><td><a href="#cs-harness">Build the harness the feature is judged against</a></td>
+          <td>A Developer Edition org publishes no platform events, so the event monitor's liveness behaviour had nothing to react to and could not be seen at all until a harness existed to feed it.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="sec-t" id="s-outcome">Outcome, in three kinds of evidence</h2>
+  <p class="lede">
+    Kept separate on purpose. Engineering evidence is the easiest to produce and
+    the least interesting to a user, and running the three together would let the
+    strongest column speak for the weakest.
+  </p>
+  <div class="grid g3">
+    <div class="pan"><div class="pan__h"><span class="pan__n">Product</span><span class="pan__s">what shipped</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">Three built pages carrying the jobs above, in two languages, on one browser
+        session with no stored credential. Version 0.4.1-beta.</p></div></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">User</span><span class="pan__s">not yet measured</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">No task-time study, no usability sessions, no usage data — the extension is not
+        published yet, so there is nothing honest to cite. The density argument rests
+        on what fits a viewport, not on a stopwatch.</p></div></div>
+    <div class="pan"><div class="pan__h"><span class="pan__n">Engineering</span><span class="pan__s">measured</span></div>
+      <div class="pan__b"><p style="margin:0;font-size:14px">4,548 tests across 334 files, three gates that fail a build rather than a review,
+        1,226 kB packaged, and five findings from an adversarial pass over the write
+        guards — all fixed, each pinned by the payload that beat it.</p></div></div>
+  </div>
+  <p class="note" style="margin-top:14px">
+    The middle column is the honest gap in this project, and stating it is cheaper
+    than implying the right-hand column covers it. Automated breadth proves the
+    logic; it proves nothing about a live Salesforce path, and the appendix says
+    which paths those are.
+  </p>
+
   <h2 class="sec-t">Scope</h2>
   <div class="tw">
     <table class="t">
       <tbody>
         <tr><td style="width:150px">Role</td><td>Design and engineering, single author — research, interface, design system, architecture, implementation.</td></tr>
-        <tr><td>Platform</td><td>Chrome extension, Manifest V3. Three built pages: a full builder tab holding Query, Chain and Console modes, a docked side panel, and the Data Loader in a tab of its own. The Console carries five tools, one of which — the debug-log analyzer — carries the Activity Tracer.</td></tr>
+        <tr><td>Platform</td><td>Chrome extension, Manifest V3. Three built pages: a full builder tab, a docked side panel, and the Data Loader in a tab of its own. The builder ships <b>two working modes — Query and Console</b>; a third tab, Chain, is a Coming Soon placeholder whose interface is deliberately not in the packaged build. The Console carries five tools, one of which — the debug-log analyzer — carries the Activity Tracer.</td></tr>
         <tr><td>Who it is for</td><td>Salesforce developers and administrators who spend the working day inside an org, and switch between several.</td></tr>
         <tr><td>Version</td><td>0.4.1-beta, in two languages. Light and dark themes, a user-set accent, corner style and text size — all driven from the same token layer.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <p class="note">
-    Two tracks below. <b>UI / UX</b> follows the work in order — problem,
-    research, direction, structure, design, system, components, outcome.
-    <b>Technical</b> covers how it is built. The rail marks a five-chapter
-    route through the essentials if you are reading in a hurry.
-  </p>
-
   <dl class="take">
     <div><dt>Decision</dt><dd>Build one surface that comes to the org tab, rather than another destination to navigate to.</dd></div>
     <div><dt>Evidence</dt><dd>Every one of these jobs — a query, an access route, a log, a live event stream, a script, a bulk load — otherwise means leaving for a separate Setup page.</dd></div>
     <div><dt>Result</dt><dd>Three surfaces sized to their context, sharing one session, one token layer and one message protocol.</dd></div>
   </dl>
+
+  <div class="cta" id="s-next">
+    <p class="cta__k">Where this goes next</p>
+    <h2 class="cta__t">The build is finished ahead of the listing.</h2>
+    <p class="cta__b">
+      0.4.1-beta is packaged and gated; what is left before a Chrome Web Store
+      submission is a live pass against a real org, not more code. The repository
+      is private while that happens, so the most useful thing you can do with this
+      page is tell me what you would need to see in it.
+    </p>
+    <p class="cta__row">
+      <a class="btn btn--pri" href="https://tally.so/r/KYA4e7" target="_blank" rel="noopener noreferrer">Tell me what to prove &rarr;</a>
+      <a class="btn" href="#appendix">Read the engineering appendix</a>
+    </p>
+    <p class="cta__f">
+      The form is the same one the extension itself links to. No account, no
+      tracking on this page — it has no scripts beyond its own navigation and
+      makes no third-party request.
+    </p>
+  </div>
+
+  <h2 class="sec-t" id="s-appendix-entry">Three ways into the appendix</h2>
+  <p class="lede">
+    Everything above is the case study. Everything below it is the record — how the
+    product was researched, designed, built and verified, including the parts that
+    are still unproven. It is long on purpose and it is not the story, so start
+    wherever a claim above made you sceptical. The chapter count is printed by the
+    gate itself rather than typed here, for the same reason every other number on
+    this page is.
+  </p>
+  <div class="bridge">
+    <a href="#b-architecture">
+      <span class="bridge__k">Architecture</span>
+      <span class="bridge__t">Three surfaces share one session and one typed message protocol. The credential is read in the service worker and never crosses back.</span>
+      <span class="bridge__m">No OAuth · nothing stored</span></a>
+    <a href="#b-performance">
+      <span class="bridge__k">Performance</span>
+      <span class="bridge__t">A finished feature was cut from the bundle rather than shipped unreachable, the log parse is bounded so a 40 MB file cannot stall the console, and a chain of fifty logs is indexed where the data already is.</span>
+      <span class="bridge__m">1,226 kB packaged · what you do not open, you do not fetch</span></a>
+    <a href="#b-reliability">
+      <span class="bridge__k">Reliability</span>
+      <span class="bridge__t">A stylesheet ceiling, an accessibility scan and a namespace audit each fail the build — and each states what it does not cover.</span>
+      <span class="bridge__m">4,548 tests · 3 gates</span></a>
+  </div>
 </section>
+
+<div class="applayer" id="appendix" data-open="1">
+  <div class="appgate">
+    <p class="appgate__t">Appendix</p>
+    <p class="appgate__n">11 chapters on how it was designed, built and verified — the long record, not the story.</p>
+    <button type="button" id="appbtn" aria-expanded="false" aria-controls="appendix">Open the appendix</button>
+  </div>
 <section class="board" data-sec="ux" id="b-research" aria-labelledby="h-research">
   <div class="bhead">
     <p class="bhead__k">UX · 02 — The problem</p>
@@ -2301,8 +2446,8 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <table class="t">
       <thead><tr><th>Measure</th><th>Value</th><th>What it means</th></tr></thead>
       <tbody>
-        <tr><td>Packaged extension</td><td>1,224 kB</td><td>Zipped, as the store receives it. Larger than the 756 kB left after the Chain UI was cut, because a Console, a Data Loader, a tracer and a second language catalog have shipped since. What a session does not open, it does not fetch: the spreadsheet writer, the Spanish catalog and the trace map are each their own chunk.</td></tr>
-        <tr><td>Automated suite</td><td>4,532 tests · 333 files</td><td>Fast and deterministic. Every Salesforce integration is mocked.</td></tr>
+        <tr><td>Packaged extension</td><td>1,226 kB</td><td>Zipped, as the store receives it. Larger than the 756 kB left after the Chain UI was cut, because a Console, a Data Loader, a tracer and a second language catalog have shipped since. What a session does not open, it does not fetch: the spreadsheet writer, the Spanish catalog and the trace map are each their own chunk.</td></tr>
+        <tr><td>Automated suite</td><td>4,548 tests · 334 files</td><td>Fast and deterministic. Every Salesforce integration is mocked.</td></tr>
         <tr><td>Design tokens</td><td>2 hue angles</td><td>The whole palette derives from two custom properties, which is what makes a user-set accent possible with no per-component overrides.</td></tr>
         <tr><td>Build gates</td><td>3</td><td>Stylesheet ceiling, accessibility scan, cross-browser namespace audit. Each fails the build, not the review.</td></tr>
       </tbody>
@@ -2340,12 +2485,12 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
   </p>
   <div class="ev">
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
-      <div class="ev__b"><b>4,532 tests across 333 files, all passing</b> — full suite run
+      <div class="ev__b"><b>4,548 tests across 334 files, all passing</b> — full suite run
         17 August 2026, alongside a clean typecheck and lint. Fast and deterministic;
         every Salesforce integration in it is mocked. The number is read from that
         run when this page is built, so it cannot describe an earlier one.</div></div>
     <div class="ev__r"><div class="ev__t ev__t--m">Measured</div>
-      <div class="ev__b"><b>1,224 kB packaged</b>, zipped as the store receives it. The cut
+      <div class="ev__b"><b>1,226 kB packaged</b>, zipped as the store receives it. The cut
         recorded below took the package from 883 kB to 756 kB; the tools that shipped
         after it are what account for the difference between that figure and this
         one. Both numbers are on the page because reporting only the fall would be
@@ -2404,8 +2549,8 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
 
   <div class="stats" style="margin-bottom:30px">
     <div><p class="k">Manifest</p><p class="v">V3</p></div>
-    <div><p class="k">Tests</p><p class="v"><em>4,532</em></p></div>
-    <div><p class="k">Packaged</p><p class="v">1,224<span style="font-size:15px"> kB</span></p></div>
+    <div><p class="k">Tests</p><p class="v"><em>4,548</em></p></div>
+    <div><p class="k">Packaged</p><p class="v">1,226<span style="font-size:15px"> kB</span></p></div>
     <div><p class="k">Third-party calls</p><p class="v"><em>0</em></p></div>
     <div><p class="k">Enforcement gates</p><p class="v">3</p></div>
   </div>
@@ -2510,13 +2655,13 @@ a:focus-visible, .tab:focus-visible, button:focus-visible { outline:2px solid va
     <dd>Injected at <code class="doc-inline">document_idle</code> into <code class="doc-inline">*.my.salesforce.com</code>, <code class="doc-inline">*.lightning.force.com</code> and <code class="doc-inline">*.salesforce.com</code>. It does two small things and nothing else: it infers the org identity from <code class="doc-inline">window.location.hostname</code> and fires <code class="doc-inline">REPORT_ACTIVE_ORG</code> at the service worker, and it grafts a style-isolated edge launcher into a shadow root on the page. It never touches the session — it structurally cannot, because <code class="doc-inline">sid</code> is <code class="doc-inline">HttpOnly</code>. Its <code class="doc-inline">notify()</code> helper guards on <code class="doc-inline">chrome.runtime?.id</code> before sending, because after an extension reload the old content script's runtime is invalidated and <code class="doc-inline">sendMessage</code> throws <em>synchronously</em>, so an attached <code class="doc-inline">.catch()</code> never runs.</dd>
 
     <dt>Builder tab</dt>
-    <dd>The full workbench: a normal extension page opened in its own tab, holding three modes — Query, Chain and Console. Multi-tab SOQL/SOSL authoring grouped by org, results grid, record editing, export, saved queries. The service worker keeps a per-window singleton registry so exactly one builder tab exists per Chrome window.</dd>
+    <dd>The full workbench: a normal extension page opened in its own tab. Two modes are live in the packaged build — Query and Console — and a third tab, Chain, renders a Coming Soon page because its interface was removed from the bundle while the feature is gated. Multi-tab SOQL/SOSL authoring grouped by org, results grid, record editing, export, saved queries. The service worker keeps a per-window singleton registry so exactly one builder tab exists per Chrome window.</dd>
 
     <dt>Side panel</dt>
     <dd>Registered as <code class="doc-inline">side_panel.default_path</code>. A narrow companion surface that follows whatever Salesforce page is in the active tab.</dd>
 
     <dt>Dev Console — five tools inside the builder tab</dt>
-    <dd>An Anonymous Apex runner, an HTTP callout tester, a GraphQL explorer, a platform-event monitor and a debug-log analyzer, on a rail so that switching between them unmounts nothing. The event monitor and the log analyzer were standalone extension pages until August 2026, and the revision is worth stating plainly: <b>DD-01 originally fixed the builder at Query and Chain, and it now reads Query, Chain and Console.</b> Being separate pages meant a user could open a second copy of either tool — a second subscription to the same channel, a second open log — with nothing in the interface to say which one they were reading. The pages stopped being built rather than being left as a trap, and their keys were removed from the app registry so nothing can route to them by accident.</dd>
+    <dd>An Anonymous Apex runner, an HTTP callout tester, a GraphQL explorer, a platform-event monitor and a debug-log analyzer, on a rail so that switching between them unmounts nothing. The event monitor and the log analyzer were standalone extension pages until August 2026, and the revision is worth stating plainly: <b>DD-01 originally fixed the builder at Query and Chain; it now reads Query, Chain and Console — and of those three, Chain is the one that does not ship.</b> Being separate pages meant a user could open a second copy of either tool — a second subscription to the same channel, a second open log — with nothing in the interface to say which one they were reading. The pages stopped being built rather than being left as a trap, and their keys were removed from the app registry so nothing can route to them by accident.</dd>
 
     <dt>Data Loader</dt>
     <dd>Its own extension page, and the one tool that genuinely needs to be. MV3 stops a service-worker handler at five minutes and a single fetch at thirty seconds, so the batching and polling loop for a load of any size has to live in a real tab. This is the same reasoning that makes the Console tools <em>not</em> pages, arriving at the opposite answer because the constraint is different.</dd>
@@ -3003,7 +3148,7 @@ const INLINE_STYLE_CEILING = 665;</code></pre>
     <div><p class="k">Panel cold start</p><p class="v"><em>754</em><span style="font-size:15px"> ms</span></p></div>
     <div><p class="k">Find, 10k lines</p><p class="v">1–3<span style="font-size:15px"> ms</span></p></div>
     <div><p class="k">DOM nodes, 10k rows</p><p class="v">~90</p></div>
-    <div><p class="k">Packaged</p><p class="v">1,224<span style="font-size:15px"> kB</span></p></div>
+    <div><p class="k">Packaged</p><p class="v">1,226<span style="font-size:15px"> kB</span></p></div>
   </div>
 
   <h2 class="sec-t">The four techniques</h2>
@@ -3141,7 +3286,7 @@ for (let i = 0; i &lt; take.length; i++)
           </tbody>
         </table></div>
       </div>
-      <p class="pan__f"><b>The package is 1,224 kB, and it has gone both ways.</b> Cutting the gated
+      <p class="pan__f"><b>The package is 1,226 kB, and it has gone both ways.</b> Cutting the gated
         Chain UI took it from 883 kB to 756 kB — the largest single win was deleting a
         feature that shipped disabled, because the code was still downloaded by
         everyone who installed it. The Console, the Data Loader and the
@@ -3322,7 +3467,7 @@ for (let i = 0; i &lt; take.length; i++)
   <h2 class="sec-t">What each layer can prove</h2>
   <div class="grid g2">
     <div class="pan">
-      <div class="pan__h"><span class="pan__n">What 4,532 tests prove</span></div>
+      <div class="pan__h"><span class="pan__n">What 4,548 tests prove</span></div>
       <div class="pan__b">
         <p style="margin:0;font-size:14px">Pure logic, parsing, diagnosis rules, access verdicts, follow behaviour,
         message shapes, manifest permissions. All of it fast and deterministic.</p>
@@ -3356,7 +3501,7 @@ for (let i = 0; i &lt; take.length; i++)
   <dl class="take">
     <div><dt>Decision</dt><dd>Put the properties review reads past into gates that fail the build.</dd></div>
     <div><dt>Evidence</dt><dd>A stylesheet ceiling, an accessibility scan and a namespace audit — each one catching a class of drift that degrades gradually rather than breaking.</dd></div>
-    <div><dt>Result</dt><dd>4,532 automated tests, plus three gates that state their own scope including what they do not cover.</dd></div>
+    <div><dt>Result</dt><dd>4,548 automated tests, plus three gates that state their own scope including what they do not cover.</dd></div>
   </dl>
 </section>
 
@@ -3380,7 +3525,7 @@ for (let i = 0; i &lt; take.length; i++)
   </p>
   <div class="doc-table-wrap">
     <table class="doc-table">
-      <caption class="doc-cap">Measured at the cut, 31 July 2026 — not current totals. The suite has since grown to 4,532 tests and the package to 1,224 kB as later work landed.</caption>
+      <caption class="doc-cap">Measured at the cut, 31 July 2026 — not current totals. The suite has since grown to 4,548 tests and the package to 1,226 kB as later work landed.</caption>
         <thead><tr><th>Artifact</th><th>Before the cut</th><th>After the cut</th></tr></thead>
       <tbody>
         <tr><td>Chain UI chunk</td><td>277 kB</td><td>removed</td></tr>
@@ -3594,6 +3739,8 @@ for (let i = 0; i &lt; take.length; i++)
 
 
 </section>
+</div>
+
   </main>
 </div>
 <button type="button" class="totop" id="totop" aria-label="Back to top">&uarr; Top</button>
@@ -3632,6 +3779,7 @@ for (let i = 0; i &lt; take.length; i++)
       var line = window.innerHeight * 0.32, best = null, bestD = Infinity;
       for (var i=0;i<boards.length;i++){
         var r = boards[i].getBoundingClientRect();
+        if (!r.height) continue;                    // a collapsed appendix board
         if (r.bottom < 0 || r.top > window.innerHeight) continue;
         var d = (r.top <= line && r.bottom >= line) ? 0 : Math.min(Math.abs(r.top-line), Math.abs(r.bottom-line));
         if (d < bestD) { bestD = d; best = boards[i]; }
@@ -3672,15 +3820,58 @@ for (let i = 0; i &lt; take.length; i++)
 
     pick();
 
-    // ── Fast-read: dims the rail down to the five essential chapters. It never
-    // hides a section — the whole document stays scrollable either way.
-    var fast = document.getElementById("fast"), rail = document.getElementById("rail");
-    if (fast && rail) fast.addEventListener("click", function(){
-      var on = fast.getAttribute("aria-pressed") !== "true";
-      fast.setAttribute("aria-pressed", on ? "true" : "false");
-      rail.setAttribute("data-fast", on ? "1" : "0");
-      fast.textContent = on ? "Showing essentials" : "5-minute read";
+    // ── The appendix gate.
+    //    Twelve chapters measured seventy-seven minutes of reading, so they start
+    //    closed and the core story is the page. Closing happens HERE rather than
+    //    in the markup: with no JS the appendix is already open, so nothing is
+    //    unreachable, nothing is unprintable, and no crawler sees a stub.
+    var layer = document.getElementById("appendix");
+    var rail  = document.getElementById("rail");
+    var toggles = [document.getElementById("fast"), document.getElementById("appbtn")].filter(Boolean);
+
+    function setAppendix(open, move){
+      if (!layer) return;
+      layer.setAttribute("data-open", open ? "1" : "0");
+      if (rail) rail.setAttribute("data-app", open ? "1" : "0");
+      toggles.forEach(function(b){
+        b.setAttribute("aria-expanded", open ? "true" : "false");
+        if (b.id === "appbtn") b.textContent = open ? "Close the appendix" : "Open the appendix";
+        else b.textContent = open ? "Hide appendix" : "Engineering appendix";
+      });
+      if (open && move) {
+        var firstBoard = layer.querySelector(".board");
+        if (firstBoard) firstBoard.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      }
+      // Eleven boards just entered or left the flow, so every rectangle that
+      // pick() cached is stale.
+      pick();
+    }
+
+    // A deep link into an appendix chapter has to open it. A shared
+    // #b-architecture URL landing on a collapsed page reads as a broken anchor.
+    var deep = null;
+    if (layer && location.hash.length > 1) {
+      try { deep = layer.querySelector(location.hash); } catch (err) { deep = null; }
+    }
+    setAppendix(!!deep, false);
+    if (deep) deep.scrollIntoView({ block: "start" });
+
+    toggles.forEach(function(b){
+      b.addEventListener("click", function(){
+        setAppendix(layer.getAttribute("data-open") !== "1", b.id === "appbtn");
+      });
     });
+
+    // Any link pointing into the appendix opens it first — otherwise the click
+    // scrolls to something that is display:none. Capture phase, so this runs
+    // before the rail's own smooth-scroll handler.
+    document.addEventListener("click", function(e){
+      var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+      if (!a || !layer || a.getAttribute("href").length < 2) return;
+      var inside = null;
+      try { inside = layer.querySelector(a.getAttribute("href")); } catch (err) { return; }
+      if (inside && layer.getAttribute("data-open") !== "1") setAppendix(true, false);
+    }, true);
 
     // ── Live case file: an explicit state machine, not timer-driven sequencing.
     //    idle → opening → arriving → answered
